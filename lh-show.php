@@ -3,11 +3,30 @@
 Plugin Name: LH Show
 Plugin URI: http://localhero.biz/plugins/lh-show/
 Description: PGS take on sliders and carousels
-Version: 0.01
+Version: 0.02
 Author: Peter Shaw
 Author URI: http://shawfactor.com/
-*/
 
+== Changelog ==
+
+= 0.01 =
+* Initial release
+= 0.02 =
+* Added shortcodes
+
+License:
+Released under the GPL license
+http://www.gnu.org/copyleft/gpl.html
+
+Copyright 2011  Peter Shaw  (email : pete@localhero.biz)
+
+
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published bythe Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 //Size for LH Show Slider
  add_image_size( 'lh-show-featured', 600, 450, true );
@@ -73,7 +92,25 @@ $carouselPosts->query("showposts=10&post_parent=$page->ID&post_type=page");
 
 ?>
 
-<script type="text/javascript" src="scripts/carousel_start.js"></script>
+<script>
+jQuery("html").addClass("placid_slider_fouc");
+
+jQuery(document).ready(function() {
+		   jQuery(".placid_slider_fouc .placid_slider").css({"display" : "block"});
+		});
+		jQuery(document).ready(function() {
+			jQuery("#placid_slider_1").simplyScroll({
+				className: "placid_slider_instance",
+				autoMode: "loop",
+				
+				estimatedwidth:200,
+				speed:2
+			});
+		});
+
+
+
+</script>
 
 <div class="placid_slider placid_slider_div">
 <div class="placid_slider_handle placid_slider_handle_div">
@@ -148,7 +185,18 @@ function lh_show_scripts_method() {
 		plugins_url('/scripts/placid.js', __FILE__),
 		array('jquery')
 	);
-}   
+}  
 
+function lh_show_return_carousel_iframe($atts){
+$foo = "<iframe src=\"http://www.royalparktouch.com/wp-content/plugins/lh-show/placid.php\" frameborder=\"0\" scrolling=\"no\" width=\"700\" height=\"200\"></iframe>";
+
+    return $foo;  
+
+} 
+
+add_shortcode( 'lh_show_carousel_iframe', 'lh_show_return_carousel_iframe' );
+
+// Enable use of the shortcode in text widgets
+			add_filter( 'widget_text', 'do_shortcode' );
 
 ?>

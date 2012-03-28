@@ -25,3 +25,7 @@ Install using WordPress:
 
 **0.0.1 March 23, 2012**  
 Initial release.
+
+**0.0.2 March 26, 2012**  
+Added shortcodes
+
