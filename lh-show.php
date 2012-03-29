@@ -3,7 +3,7 @@
 Plugin Name: LH Show
 Plugin URI: http://localhero.biz/plugins/lh-show/
 Description: PGS take on sliders and carousels
-Version: 0.02
+Version: 0.03
 Author: Peter Shaw
 Author URI: http://shawfactor.com/
 
@@ -13,6 +13,8 @@ Author URI: http://shawfactor.com/
 * Initial release
 = 0.02 =
 * Added shortcodes
+= 0.03 =
++ External links on Carousel and Slider
 
 License:
 Released under the GPL license
@@ -60,7 +62,11 @@ $thumbnail_image_url = wp_get_attachment_image_src( get_post_thumbnail_id($post-
 <div class="imageElement">
 <h3><?php echo $post->post_title; ?></h3>
 <p><?php echo $post->post_excerpt; ?></p>
-<a href="<?php the_permalink(); ?>" title="open image" class="open"></a>
+<a href="<?php if ( get_post_meta($post->ID, 'link_url', true) ){
+echo get_post_meta($post->ID, 'link_url', true);
+} else { 
+the_permalink(); 
+} ?>" title="open image" class="open"></a>
 <img src="<?php echo $medium_image_url[0];  ?>" class="full" />
 <img src="<?php echo $thumbnail_image_url[0]; ?>" class="thumbnail" />
 </div>
@@ -126,9 +132,7 @@ for($i=1; $i<=$carouselPosts; $i++) { // start for() loop
 while ($carouselPosts->have_posts()) : $carouselPosts->the_post(); // loop for posts titles
 
 
-$carousel_image_url = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'lh-show-carousel');
-
-
+$carousel_image = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'lh-show-carousel');
 
 
 
@@ -136,12 +140,20 @@ $carousel_image_url = wp_get_attachment_image_src( get_post_thumbnail_id($post->
 
 <div class="placid_slideri placid_item_div">
 <!-- placid_slideri -->
-<a href="<?php the_permalink(); ?>" title="<?php echo $post->post_title; ?>">
-<img src="<?php echo $carousel_image_url[0]; ?>" alt="<?php echo $post->post_title; ?>" class="slider_thumbnail full placid_slider_thumbnail slider_thumbnail_img"  width="300" height="200" />
+<a href="<?php if ( get_post_meta($post->ID, 'link_url', true) ){
+echo get_post_meta($post->ID, 'link_url', true);
+} else { 
+the_permalink(); 
+} ?>" title="<?php echo $post->post_title; ?>">
+<img src="<?php echo $carousel_image[0]; ?>" alt="<?php echo $post->post_title; ?>" class="slider_thumbnail full placid_slider_thumbnail slider_thumbnail_img"  width="<?php echo $carousel_image[1]; ?>" height="<?php echo $carousel_image[2]; ?>" />
 </a>
 <div class="placid_text">
 <h2 class="placid_header">
-<a href="<?php the_permalink(); ?>" class="placid_text_anchor"><?php echo $post->post_title; ?></a>
+<a href="<?php if ( get_post_meta($post->ID, 'link_url', true) ){
+echo get_post_meta($post->ID, 'link_url', true);
+} else { 
+the_permalink(); 
+} ?>" class="placid_text_anchor"><?php echo $post->post_title; ?></a>
 </h2>
 <!-- /placid_slideri -->
 </div>
@@ -185,10 +197,23 @@ function lh_show_scripts_method() {
 		plugins_url('/scripts/placid.js', __FILE__),
 		array('jquery')
 	);
-}  
+} 
+
+
+
+function lh_show_return_slider_iframe($atts){
+
+$foo = "<iframe src=\"".get_bloginfo('wpurl')."/wp-content/plugins/lh-show/\" frameborder=\"0\" scrolling=\"no\" width=\"600\" height=\"450\"></iframe>";
+
+    return $foo;  
+
+} 
+
+add_shortcode( 'lh_show_slider_iframe', 'lh_show_return_slider_iframe' );
+
 
 function lh_show_return_carousel_iframe($atts){
-$foo = "<iframe src=\"http://www.royalparktouch.com/wp-content/plugins/lh-show/placid.php\" frameborder=\"0\" scrolling=\"no\" width=\"700\" height=\"200\"></iframe>";
+$foo = "<iframe src=\"".get_bloginfo('wpurl')."/wp-content/plugins/lh-show/placid.php\" frameborder=\"0\" scrolling=\"no\" width=\"95%\" height=\"200\"></iframe>";
 
     return $foo;  
 

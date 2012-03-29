@@ -29,3 +29,7 @@ Initial release.
 **0.0.2 March 26, 2012**  
 Added shortcodes
 
+
+**0.0.3 March 27, 2012**  
+External link on Carousel and Slider
+
