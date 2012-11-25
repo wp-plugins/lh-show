@@ -33,3 +33,9 @@ Added shortcodes
 **0.0.3 March 27, 2012**  
 External link on Carousel and Slider
 
+**0.0.4 November 22, 2012**  
+Removed Carousel
+
+**0.0.5 November 24, 2012**  
+Changed Slider to be based on Galleria classic theme
+

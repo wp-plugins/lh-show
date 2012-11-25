@@ -15,6 +15,10 @@ Author URI: http://shawfactor.com/
 * Added shortcodes
 = 0.03 =
 + External links on Carousel and Slider
+= 0.04 =
+Removed Carousel
+= 0.0.5 =
+Changed Slider to be based on Galleria classic theme
 
 License:
 Released under the GPL license
@@ -31,53 +35,189 @@ You should have received a copy of the GNU General Public License along with thi
 */
 
 //Size for LH Show Slider
- add_image_size( 'lh-show-featured', 600, 450, true );
+ add_image_size( 'lh-show-featured', 480, 360, true );
 
 
 //Size for LH Show Carousel
  add_image_size( 'lh-show-carousel', 300, 200, true );
 
 
-function lh_show_print_slider(){
+function lh_show_print_galleria_json(){
 
 global $post;
 
-$featuredPosts = new WP_Query();  
+$featuredPosts = new WP_Query();
 
-$featuredPosts->query('showposts=5&cat=28');  
+$category_id = get_cat_ID('featured');
 
-echo "<div id=\"myGallerySet\">\n<div id=\"myGallery\" class=\"galleryElement\">\n";
+$featuredPosts->query("showposts=5&cat=$category_id");  
+
+$stack = array();
+
 
 
 for($i=1; $i<=$featuredPosts; $i++) { // start for() loop  
 
 while ($featuredPosts->have_posts()) : $featuredPosts->the_post(); // loop for posts titles
 
+$full_image_url = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full');
+
 $medium_image_url = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'lh-show-featured');
 
 $thumbnail_image_url = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'thumbnail');
 
-?>  
+$format = get_post_format();
 
-<div class="imageElement">
-<h3><?php echo $post->post_title; ?></h3>
-<p><?php echo $post->post_excerpt; ?></p>
-<a href="<?php if ( get_post_meta($post->ID, 'link_url', true) ){
-echo get_post_meta($post->ID, 'link_url', true);
-} else { 
-the_permalink(); 
-} ?>" title="open image" class="open"></a>
-<img src="<?php echo $medium_image_url[0];  ?>" class="full" />
-<img src="<?php echo $thumbnail_image_url[0]; ?>" class="thumbnail" />
-</div>
+$content = get_the_content();
 
-<?php endwhile;  
+
+
+if ($format == "video"){
+
+$pattern = '|^\s*(https?://[^\s"]+)\s*$|im';
+
+if (preg_match_all($pattern,$content,$matches)) {
+
+$foo[video] = $matches[1][0];
+
+}
+
+
+$foo[thumb] = $thumbnail_image_url[0];
+$foo[title] = $post->post_title;
+$foo[description] = $post->post_excerpt;
+
+
+} elseif ($format == "link") {
+
+$link_string = extract_from_string('<a href=', '/a>', $content);
+$link_bits = explode('"', $link_string);
+
+
+foreach( $link_bits as $bit ) {
+	if( substr($bit, 0, 1) == '>') $link_text = substr($bit, 1, strlen($bit)-2);
+	if( substr($bit, 0, 4) == 'http') $link_url = $bit;
+
+}
+
+
+if ($link_url){
+
+$foo[link] = $link_url;
+
+} else {
+
+$foo[link] = get_permalink($post->ID);
+
+}
+
+
+$foo[thumb] = $thumbnail_image_url[0];
+$foo[image] = $medium_image_url[0];
+$foo[big] = $full_image_url[0];
+$foo[title] = $post->post_title;
+$foo[description] = $post->post_excerpt;
+$foo[layer] = $post->post_excerpt;
+
+
+
+
+} else {
+
+$foo[thumb] = $thumbnail_image_url[0];
+$foo[image] = $medium_image_url[0];
+$foo[big] = $full_image_url[0];
+$foo[title] = $post->post_title;
+$foo[description] = $post->post_excerpt;
+$foo[link] = get_permalink($post->ID);
+$foo[layer] = $post->post_excerpt;
+
+}
+
+array_push($stack, $foo);
+
+unset($foo);
+
+endwhile;  
 
 } 
 
-echo "</div></div>";
+return $stack;
 
 }
+
+
+
+
+
+
+function lh_show_print_galleria(){
+
+
+
+?>
+
+
+
+<!-- load Galleria -->
+<script src="<?php echo plugins_url( '' , __FILE__ );  ?>/galleria/galleria-1.2.8.js"></script>
+ 
+<script>
+
+
+
+// Load the classic theme
+Galleria.loadTheme('<?php echo plugins_url( '' , __FILE__ );  ?>/galleria/themes/classic/galleria.classic.js');
+
+<?php
+
+$test = lh_show_print_galleria_json();
+
+
+echo "var test = ".json_encode($test);
+
+?>
+
+
+// Initialize Galleria
+Galleria.run('#galleria', {
+    dataSource: test ,
+    height: 320,
+extend: function() {
+        this.play(4000); // will advance every 4th second
+    }
+
+
+});
+
+
+
+</script>
+
+<?php
+
+}
+
+
+function lh_show_galleria_short_func( $atts ) {
+	extract( shortcode_atts( array(
+		'foo' => 'something',
+		'bar' => 'something else',
+	), $atts ) );
+
+add_action('wp_footer', 'lh_show_print_galleria');
+
+return "<div id=\"galleria\"></div><span id=\"lh_show_plugin_url\" data-lh_show_plugins_url=\"".plugins_url( '' , __FILE__ )."\" > </span><span id=\"fullscreen\">Fullscreen</span>";
+
+
+
+}
+
+add_shortcode( 'lh_show_galleria_short', 'lh_show_galleria_short_func' );
+
+
+
+
 
 
 function lh_show_print_carousel($var){
@@ -223,5 +363,25 @@ add_shortcode( 'lh_show_carousel_iframe', 'lh_show_return_carousel_iframe' );
 
 // Enable use of the shortcode in text widgets
 			add_filter( 'widget_text', 'do_shortcode' );
+
+function lh_show_modify_jquery() {
+	if (!is_admin()) {
+		// comment out the next two lines to load the local copy of jQuery
+		wp_deregister_script('jquery');
+		wp_register_script('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js', false, '1.8.2');
+		wp_enqueue_script('jquery');
+	}
+}
+
+add_action('init', 'lh_show_modify_jquery');
+
+function lh_show_enqueue_jquery() {
+if (!wp_script_is( 'jquery', $list =  'queue')){
+wp_enqueue_script('jquery');
+}
+}    
+ 
+//add_action('wp_enqueue_scripts', 'lh_show_enqueue_jquery');
+
 
 ?>
