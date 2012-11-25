@@ -19,7 +19,7 @@ Install using WordPress:
 1. Log in and go to *Plugins* and click on *Add New*.
 2. Search for *LH Show* and hit the *Install Now* link in the results. WordPress will install it.
 3. From the Plugin Management page in Wordpress, activate the *Lh Show* plugin.
-4. [Integrate](http://localhero.biz/plugins/lh-show/#howto) it into your theme.
+4. [Integrate](http://localhero.biz/plugins/lh-show/#howto) it into your theme or post.
 
 == Changelog ==
 
