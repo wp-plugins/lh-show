@@ -3,7 +3,7 @@
 Plugin Name: LH Show
 Plugin URI: http://localhero.biz/plugins/lh-show/
 Description: An implementation of Galleria classic theme as a plugin
-Version: 0.05
+Version: 0.06
 Author: Peter Shaw
 Author URI: http://shawfactor.com/
 
@@ -17,8 +17,10 @@ Author URI: http://shawfactor.com/
 + External links on Carousel and Slider
 = 0.04 =
 Removed Carousel
-= 0.0.5 =
+= 0.05 =
 Changed Slider to be based on Galleria classic theme
+= 0.06 =
+Fixed extract from string in post formats
 
 License:
 Released under the GPL license
@@ -38,8 +40,11 @@ You should have received a copy of the GNU General Public License along with thi
  add_image_size( 'lh-show-featured', 480, 360, true );
 
 
-//Size for LH Show Carousel
- add_image_size( 'lh-show-carousel', 300, 200, true );
+function lh_show_extract_from_string($start, $end, $tring) {
+	$tring = stristr($tring, $start);
+	$trimmed = stristr($tring, $end);
+	return substr($tring, strlen($start), -strlen($trimmed));
+}
 
 
 function lh_show_print_galleria_json(){
@@ -90,7 +95,7 @@ $foo[description] = $post->post_excerpt;
 
 } elseif ($format == "link") {
 
-$link_string = extract_from_string('<a href=', '/a>', $content);
+$link_string = lh_show_extract_from_string('<a href=', '/a>', $content);
 $link_bits = explode('"', $link_string);
 
 

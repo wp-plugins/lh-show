@@ -38,3 +38,7 @@ Removed Carousel
 **0.0.5 November 24, 2012**  
 Changed Slider to be based on Galleria classic theme
 
+**0.0.6 November 25, 2012**  
+Fixed extract from string on link post format
+
+
