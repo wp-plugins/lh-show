@@ -1,12 +1,12 @@
 === LH Show ===
 Contributors: shawfactor
 Donate link: http://localhero.biz/plugins/lh-show/
-Tags: carousel, galleria, classic, gallery, pictures, images, slideshow
+Tags: galleria, classic, gallery, pictures, images, slideshow, post formats
 Requires at least: 3.0
 Tested up to: 3.3.1
 Stable tag: trunk
 
-Embed Galleria slideshow into your theme as a slaideshow.
+Embed Galleria slideshow into your theme as a slideshow.
 
 == Description ==
 
