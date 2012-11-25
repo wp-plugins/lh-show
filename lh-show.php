@@ -3,7 +3,7 @@
 Plugin Name: LH Show
 Plugin URI: http://localhero.biz/plugins/lh-show/
 Description: PGS take on sliders and carousels
-Version: 0.03
+Version: 0.05
 Author: Peter Shaw
 Author URI: http://shawfactor.com/
 
