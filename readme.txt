@@ -1,16 +1,16 @@
 === LH Show ===
 Contributors: shawfactor
 Donate link: http://localhero.biz/plugins/lh-show/
-Tags: carousel, smoothgallery, gallery, pictures, images, slideshow
+Tags: carousel, galleria, classic, gallery, pictures, images, slideshow
 Requires at least: 3.0
 Tested up to: 3.3.1
 Stable tag: trunk
 
-Embed Smooth Gallery into your theme, or add a carousel.
+Embed Galleria slideshow into your theme as a slaideshow.
 
 == Description ==
 
-This plugin allows Smooth Gallery and Carousel into your theme.
+This plugin implements Galleria classic as a shortcode.
 
 == Installation ==
 
@@ -28,7 +28,6 @@ Initial release.
 
 **0.0.2 March 26, 2012**  
 Added shortcodes
-
 
 **0.0.3 March 27, 2012**  
 External link on Carousel and Slider
