@@ -3,7 +3,7 @@
 Plugin Name: LH Show
 Plugin URI: http://localhero.biz/plugins/lh-show/
 Description: An implementation of Galleria classic theme as a plugin
-Version: 0.06
+Version: 0.07
 Author: Peter Shaw
 Author URI: http://shawfactor.com/
 
@@ -14,13 +14,15 @@ Author URI: http://shawfactor.com/
 = 0.02 =
 * Added shortcodes
 = 0.03 =
-+ External links on Carousel and Slider
+* External links on Carousel and Slider
 = 0.04 =
-Removed Carousel
+*Removed Carousel
 = 0.05 =
 Changed Slider to be based on Galleria classic theme
 = 0.06 =
-Fixed extract from string in post formats
+*Fixed extract from string in post formats
+= 0.07 =
+*Upgraded to version 1.2.9 and removed jquery override
 
 License:
 Released under the GPL license
@@ -165,7 +167,7 @@ function lh_show_print_galleria(){
 
 
 <!-- load Galleria -->
-<script src="<?php echo plugins_url( '' , __FILE__ );  ?>/galleria/galleria-1.2.8.js"></script>
+<script src="<?php echo plugins_url( '' , __FILE__ );  ?>/galleria/galleria-1.2.9.js"></script>
  
 <script>
 
@@ -372,8 +374,8 @@ add_shortcode( 'lh_show_carousel_iframe', 'lh_show_return_carousel_iframe' );
 function lh_show_modify_jquery() {
 	if (!is_admin()) {
 		// comment out the next two lines to load the local copy of jQuery
-		wp_deregister_script('jquery');
-		wp_register_script('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js', false, '1.8.2');
+//wp_deregister_script('jquery');
+//wp_register_script('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js', false, '1.8.2');
 		wp_enqueue_script('jquery');
 	}
 }

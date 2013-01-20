@@ -7,8 +7,6 @@
  *
  */
 
-
-
 (function($) {
 
 /*global jQuery, Galleria */
@@ -95,11 +93,3 @@ Galleria.addTheme({
 });
 
 }(jQuery));
-
-
-Galleria.ready(function() {
-  var gallery = this; // galleria is ready and the gallery is assigned
-  $('#fullscreen').click(function() {
-    gallery.toggleFullscreen(); // toggles the fullscreen
-  });
-});

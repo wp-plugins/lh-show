@@ -3,7 +3,7 @@ Contributors: shawfactor
 Donate link: http://localhero.biz/plugins/lh-show/
 Tags: galleria, classic, gallery, pictures, images, slideshow, post formats
 Requires at least: 3.0
-Tested up to: 3.3.1
+Tested up to: 3.6
 Stable tag: trunk
 
 Embed Galleria slideshow into your theme as a slideshow.
@@ -40,5 +40,9 @@ Changed Slider to be based on Galleria classic theme
 
 **0.0.6 November 25, 2012**  
 Fixed extract from string on link post format
+
+**0.0.7 January 15, 2013**  
+Upgraded to galleria version 1.2.9 and removed jquery override
+
 
 
